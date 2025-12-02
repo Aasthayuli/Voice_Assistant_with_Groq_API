@@ -1,0 +1,28 @@
+# Flask Framework
+Flask==3.0.0
+flask-cors==4.0.0
+
+# AI/ML Libraries
+groq==0.4.2
+openai>=1.30.0
+
+# HTTP Client (Required for Groq)
+httpx==0.26.0
+httpcore==1.0.2
+
+# Speech Recognition
+SpeechRecognition==3.10.0
+PyAudio==0.2.14
+
+# Text-to-Speech
+gTTS==2.4.0
+
+# Audio Processing
+pydub==0.25.1
+
+# Environment Variables
+python-dotenv==1.0.0
+
+# Utilities
+Werkzeug==3.0.1
+requests==2.31.0
