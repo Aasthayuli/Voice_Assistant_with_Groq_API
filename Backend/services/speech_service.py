@@ -1,5 +1,4 @@
 import speech_recognition as sr
-import os
 from utils.audio_utils import convert_to_wav, delete_file
 
 
@@ -173,7 +172,7 @@ def recognize_with_fallback(audio_filepath, primary_language='en-US', fallback_l
                 delete_file(wav_filepath)
             return {'success': True, 'text': text, 'language': primary_language}
         except sr.UnknownValueError:
-            # Try fallback language
+            # Trying fallback language
             print(f"Primary language failed, trying {fallback_language}...")
             text = recognizer.recognize_google(audio_data, language=fallback_language)
             if wav_filepath != audio_filepath:
@@ -196,9 +195,7 @@ def get_audio_info(audio_filepath):
     Returns:
         dict: Audio file information
     """
-    try:
-        recognizer = sr.Recognizer()
-        
+    try:        
         with sr.AudioFile(audio_filepath) as source:
             duration = source.DURATION
             sample_rate = source.SAMPLE_RATE

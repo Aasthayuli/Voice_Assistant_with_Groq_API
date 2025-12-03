@@ -36,16 +36,16 @@ def create_app(config_name='development'):
     # Validate configuration
     try:
         Config.validate_config()
-        print("✅ Configuration validated successfully")
+        print("Configuration validated successfully")
     except Exception as e:
-        print(f"❌ Configuration error: {str(e)}")
+        print(f"Configuration error: {str(e)}")
         return None
     
     # Initialize Groq client
     if initialize_groq_client():
-        print("✅ Groq client initialized")
+        print("Groq client initialized")
     else:
-        print("⚠️  Warning: Groq client initialization failed")
+        print("Warning: Groq client initialization failed")
     
     # Create necessary directories
     os.makedirs(Config.UPLOAD_FOLDER, exist_ok=True)
@@ -117,16 +117,16 @@ def create_app(config_name='development'):
                     'error': error_msg
                 }), 400
             
-            print(f"📥 Received audio file: {audio_file.filename}")
+            print(f"Received audio file: {audio_file.filename}")
             
             # Save audio file
             audio_path = save_audio_file(audio_file)
-            print(f"💾 Audio saved to: {audio_path}")
+            print(f"Audio saved to: {audio_path}")
             
             # Check audio duration
             try:
                 duration = get_audio_duration(audio_path)
-                print(f"⏱️  Audio duration: {duration:.2f} seconds")
+                print(f"Audio duration: {duration:.2f} seconds")
                 
                 if duration > Config.MAX_AUDIO_DURATION:
                     return jsonify({
@@ -134,10 +134,10 @@ def create_app(config_name='development'):
                         'error': f'Audio too long. Maximum {Config.MAX_AUDIO_DURATION} seconds allowed.'
                     }), 400
             except Exception as e:
-                print(f"⚠️  Could not check duration: {str(e)}")
+                print(f"Could not check duration: {str(e)}")
             
             # Step 1: Convert audio to text (Speech Recognition)
-            print("🎤 Converting speech to text...")
+            print("Converting speech to text...")
             speech_result = audio_to_text(audio_path)
             
             if not speech_result['success']:
@@ -147,7 +147,7 @@ def create_app(config_name='development'):
                 }), 400
             
             user_text = speech_result['text']
-            print(f"📝 Transcribed: {user_text}")
+            print(f"Transcribed: {user_text}")
             
             # Validate transcription
             is_valid, error_msg = validate_transcription(user_text)
@@ -158,7 +158,7 @@ def create_app(config_name='development'):
                 }), 400
             
             # Step 2: Get AI response from Groq
-            print("🤖 Getting AI response...")
+            print("Getting AI response...")
             groq_result = get_groq_response(user_text)
             
             if not groq_result['success']:
@@ -168,15 +168,15 @@ def create_app(config_name='development'):
                 }), 500
             
             ai_response = groq_result['response']
-            print(f"💬 AI Response: {ai_response}")
+            print(f"AI Response: {ai_response}")
             
             # Step 3: Convert AI response to speech (Text-to-Speech)
-            print("🔊 Converting text to speech...")
+            print("Converting text to speech...")
             tts_result = text_to_speech(ai_response)
             
             if not tts_result['success']:
                 # If TTS fails, still return text response
-                print(f"⚠️  TTS failed: {tts_result['error']}")
+                print(f"TTS failed: {tts_result['error']}")
                 return jsonify({
                     'success': True,
                     'transcription': user_text,
@@ -186,7 +186,7 @@ def create_app(config_name='development'):
                 })
             
             audio_url = tts_result['audio_url']
-            print(f"🎵 Audio generated: {audio_url}")
+            print(f"Audio generated: {audio_url}")
             
             # Return complete response
             return jsonify({
@@ -198,7 +198,7 @@ def create_app(config_name='development'):
             })
         
         except Exception as e:
-            print(f"❌ Error in process_voice: {str(e)}")
+            print(f"Error in process_voice: {str(e)}")
             return jsonify({
                 'success': False,
                 'error': f'Server error: {str(e)}'
@@ -281,7 +281,7 @@ def create_app(config_name='development'):
     @app.before_request
     def log_request():
         """Log all incoming requests"""
-        print(f"📨 {request.method} {request.path}")
+        print(f"{request.method} {request.path}")
     
     
     return app
@@ -296,11 +296,11 @@ if __name__ == '__main__':
     
     if app:
         print("\n" + "="*50)
-        print("🚀 Voice Assistant Backend Server")
+        print("Voice Assistant Backend Server")
         print("="*50)
-        print(f"📍 Running on: http://{Config.HOST}:{Config.PORT}")
-        print(f"🌍 Environment: {Config.FLASK_ENV}")
-        print(f"🔧 CORS enabled for: {Config.CORS_ORIGINS}")
+        print(f"Running on: http://{Config.HOST}:{Config.PORT}")
+        print(f"Environment: {Config.FLASK_ENV}")
+        print(f"CORS enabled for: {Config.CORS_ORIGINS}")
         print("="*50 + "\n")
         
         # Run Flask app
@@ -310,4 +310,4 @@ if __name__ == '__main__':
             debug=Config.DEBUG
         )
     else:
-        print("❌ Failed to create Flask app. Check configuration.")
+        print("Failed to create Flask app. Check configuration.")

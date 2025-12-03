@@ -1,4 +1,3 @@
-import os
 from groq import Groq
 from config import Config
 
@@ -19,11 +18,11 @@ def initialize_groq_client():
         # Initialize Groq client
         client = Groq(api_key=api_key)
         
-        print("✅ Groq client initialized successfully")
+        print("Groq client initialized successfully")
         return True
     
     except Exception as e:
-        print(f"❌ Failed to initialize Groq client: {str(e)}")
+        print(f"Failed to initialize Groq client: {str(e)}")
         import traceback
         traceback.print_exc()
         return False

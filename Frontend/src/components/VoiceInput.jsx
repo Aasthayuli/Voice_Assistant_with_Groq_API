@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Mic, MicOff, Loader2 } from "lucide-react";
 import {
   startRecording,
@@ -241,9 +241,9 @@ const VoiceInput = ({ onMessageSent, onError }) => {
           {isProcessing ? (
             <Loader2 className="w-8 h-8 text-white animate-spin" />
           ) : isListening ? (
-            <MicOff className="w-8 h-8 text-white" />
+            <MicOff className="w-8 h-8 text-white cursor-pointer" />
           ) : (
-            <Mic className="w-8 h-8 text-black" />
+            <Mic className="w-8 h-8 text-black cursor-pointer" />
           )}
         </button>
       </div>
@@ -252,7 +252,7 @@ const VoiceInput = ({ onMessageSent, onError }) => {
       {isListening && (
         <button
           onClick={handleCancel}
-          className="text-sm text-gray-600 hover:text-gray-800 underline"
+          className="text-sm text-gray-200 hover:text-gray-800 underline"
         >
           Cancel
         </button>
@@ -260,7 +260,7 @@ const VoiceInput = ({ onMessageSent, onError }) => {
 
       {/* Instructions */}
       {!isListening && !isProcessing && (
-        <p className="text-sm text-gray-500 text-center">Click to speak</p>
+        <p className="text-sm text-gray-200 text-center">Click to speak</p>
       )}
     </div>
   );
