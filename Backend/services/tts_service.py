@@ -2,7 +2,7 @@ import os
 from gtts import gTTS
 from datetime import datetime
 from config import Config
-from utils.audio_utils import delete_file
+# from utils.audio_utils import delete_file
 
 
 def text_to_speech(text, language='en', slow=False):

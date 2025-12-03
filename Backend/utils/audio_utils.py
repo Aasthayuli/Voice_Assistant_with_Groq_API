@@ -1,5 +1,4 @@
 import os
-import wave
 from datetime import datetime
 from pydub import AudioSegment
 from config import Config
@@ -58,24 +57,24 @@ def save_audio_file(file, folder=None):
     
     filepath = os.path.join(folder, filename)
     
-    print(f"🔍 Saving file to: {filepath}")
-    print(f"📁 Absolute path: {os.path.abspath(filepath)}")
-    print(f"📂 Folder exists: {os.path.exists(folder)}")
+    print(f"Saving file to: {filepath}")
+    print(f"Absolute path: {os.path.abspath(filepath)}")
+    print(f"Folder exists: {os.path.exists(folder)}")
     
     # Save file
     try:
         file.save(filepath)
-        print(f"✅ File saved successfully")
+        print(f"File saved successfully")
         
         # Verify file exists
         if os.path.exists(filepath):
             file_size = os.path.getsize(filepath)
-            print(f"✅ File verified! Size: {file_size} bytes")
+            print(f"File verified! Size: {file_size} bytes")
         else:
-            print(f"❌ File NOT found after save!")
+            print(f"File NOT found after save!")
         
     except Exception as e:
-        print(f"❌ Error saving file: {str(e)}")
+        print(f"Error saving file: {str(e)}")
         raise
     
     return filepath

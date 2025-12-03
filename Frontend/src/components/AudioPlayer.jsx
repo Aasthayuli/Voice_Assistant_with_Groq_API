@@ -79,11 +79,11 @@ const AudioPlayer = ({ audioUrl, autoPlay = true }) => {
   if (!audioUrl) return null;
 
   return (
-    <div className="flex items-center gap-3 bg-gray-100 rounded-lg p-3 mt-2">
+    <div className="flex items-center gap-3 rounded-lg p-3 mt-2">
       {/* Play/Pause Button */}
       <button
         onClick={handlePlayPause}
-        className="flex-shrink-0 w-10 h-10 flex items-center justify-center bg-primary-500 hover:bg-primary-600 text-white rounded-full transition-colors"
+        className="shrink-0 w-10 h-10 flex items-center justify-center bg-primary-500 hover:bg-primary-600 text-white rounded-full transition-colors"
         aria-label={isPlaying ? "Pause" : "Play"}
       >
         {isPlaying ? (
@@ -117,7 +117,7 @@ const AudioPlayer = ({ audioUrl, autoPlay = true }) => {
       {/* Mute Button */}
       <button
         onClick={toggleMute}
-        className="flex-shrink-0 w-8 h-8 flex items-center justify-center text-gray-600 hover:text-gray-800 transition-colors"
+        className="shrink-0 w-8 h-8 flex items-center justify-center text-gray-600 hover:text-gray-800 transition-colors"
         aria-label={isMuted ? "Unmute" : "Mute"}
       >
         {isMuted ? (
