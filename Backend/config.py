@@ -8,7 +8,7 @@ class Config:
     """Base configuration class"""
     
     # Flask settings
-    SECRET_KEY = os.getenv('SECRET_KEY', 'dev-secret-key-change-in-production')
+    SECRET_KEY = os.getenv('SECRET_KEY', 'dev-secret-key')
     FLASK_ENV = os.getenv('FLASK_ENV', 'development')
     DEBUG = os.getenv('FLASK_DEBUG', 'False').lower() == 'true'
     

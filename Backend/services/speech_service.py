@@ -20,7 +20,7 @@ def audio_to_text(audio_filepath):
     wav_filepath = None
     
     try:
-        # Convert audio to WAV format (required for speech recognition)
+        # Convert audio to WAV format 
         print(f"Converting audio file: {audio_filepath}")
         wav_filepath = convert_to_wav(audio_filepath)
         

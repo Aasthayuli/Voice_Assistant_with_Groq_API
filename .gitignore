@@ -166,3 +166,6 @@ tmp/
 *.pid
 *.seed
 *.pid.lock
+
+#===========================================
+project_structure.md

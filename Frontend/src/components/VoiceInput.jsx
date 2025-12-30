@@ -6,7 +6,7 @@ import {
   cancelRecording,
   checkMicrophoneSupport,
   isRecording,
-} from "../utils/audioRecorder";
+} from "../utils/audiorecorder";
 import { sendVoiceMessage, getAudioUrl } from "../services/api";
 
 /**
