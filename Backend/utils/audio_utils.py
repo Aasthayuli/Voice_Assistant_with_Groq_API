@@ -154,7 +154,7 @@ def validate_audio_duration(filepath):
         return False, 0
 
 
-def cleanup_old_files(folder, max_age_hours=24):
+def cleanup_old_files(folder):
     """
     Delete audio files older than specified hours
     
@@ -166,41 +166,17 @@ def cleanup_old_files(folder, max_age_hours=24):
         if not os.path.exists(folder):
             return
         
-        current_time = datetime.now()
-        
         for filename in os.listdir(folder):
             filepath = os.path.join(folder, filename)
             
             # Skip if not a file
             if not os.path.isfile(filepath):
                 continue
-            
-            # Get file creation time
-            file_time = datetime.fromtimestamp(os.path.getctime(filepath))
-            age_hours = (current_time - file_time).total_seconds() / 3600
-            
-            # Delete if older than max age
-            if age_hours > max_age_hours:
-                os.remove(filepath)
-                print(f"Deleted old file: {filename}")
+            os.remove(filepath)
+            print(f"Deleted old file: {filename}")
     
     except Exception as e:
         print(f"Cleanup error: {str(e)}")
-
-
-def get_file_size_mb(filepath):
-    """
-    Get file size in megabytes
-    
-    Args:
-        filepath: Path to file
-        
-    Returns:
-        float: Size in MB
-    """
-    size_bytes = os.path.getsize(filepath)
-    size_mb = size_bytes / (1024 * 1024)
-    return round(size_mb, 2)
 
 
 def delete_file(filepath):

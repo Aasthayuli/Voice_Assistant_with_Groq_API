@@ -74,8 +74,8 @@ def get_groq_response(user_message, conversation_history=None):
         # Call Groq Chat Completions API
         chat_completion = client.chat.completions.create(
             messages=messages,
-            model="llama-3.3-70b-versatile",  # Best model for conversations
-            temperature=0.7,
+            model=Config.GROQ_MODEL,
+            temperature=Config.GROQ_TEMPERATURE,
             max_tokens=1024,
             top_p=1,
             stream=False
@@ -115,63 +115,6 @@ def get_groq_response(user_message, conversation_history=None):
                 'response': None,
                 'error': f'AI service error: {error_message}'
             }
-
-
-def get_conversational_response(user_message, system_prompt=None):
-    """
-    Get conversational AI response with optional system prompt
-    
-    Args:
-        user_message: User's message
-        system_prompt: Optional system instructions
-        
-    Returns:
-        dict: Response data
-    """
-    try:
-        # Prepare messages with system prompt
-        messages = []
-        
-        if system_prompt:
-            messages.append({
-                "role": "system",
-                "content": system_prompt
-            })
-        
-        # Get response
-        result = get_groq_response(user_message, conversation_history=messages if system_prompt else None)
-        
-        return result
-    
-    except Exception as e:
-        return {
-            'success': False,
-            'response': None,
-            'error': str(e)
-        }
-
-
-def format_conversation_history(messages):
-    """
-    Format conversation history for Groq API
-    
-    Args:
-        messages: List of message dicts with 'role' and 'content'
-        
-    Returns:
-        list: Formatted messages
-    """
-    formatted = []
-    
-    for msg in messages:
-        if 'role' in msg and 'content' in msg:
-            formatted.append({
-                "role": msg['role'],
-                "content": msg['content']
-            })
-    
-    return formatted
-
 
 def test_groq_connection():
     """

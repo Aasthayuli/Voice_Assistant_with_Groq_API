@@ -1,11 +1,9 @@
-from flask import Flask, request, jsonify, send_from_directory
+from flask import Flask, request, jsonify
 from flask_cors import CORS
-from werkzeug.utils import secure_filename
-import os
 from datetime import datetime
 
 # Import configuration
-from config import Config, get_config
+from config import Config
 
 # Import services
 from services.speech_service import audio_to_text, validate_transcription
@@ -16,13 +14,17 @@ from services.tts_service import text_to_speech, cleanup_audio_files
 from utils.audio_utils import validate_audio_file, save_audio_file, get_audio_duration
 
 
-def create_app(config_name='development'):
+def create_app():
     """Create and configure Flask application"""
     
     app = Flask(__name__)
     
     # Load configuration
-    app.config.from_object(get_config(config_name))
+    try:
+        Config.init_app(app)
+    except Exception as e:
+        print("Error in flask configuration set up !")
+        return None
     
     # Enable CORS for frontend communication
     CORS(app, resources={
@@ -33,54 +35,31 @@ def create_app(config_name='development'):
         }
     })
     
-    # Validate configuration
-    try:
-        Config.validate_config()
-        print("Configuration validated successfully")
-    except Exception as e:
-        print(f"Configuration error: {str(e)}")
-        return None
-    
     # Initialize Groq client
     if initialize_groq_client():
         print("Groq client initialized")
     else:
         print("Warning: Groq client initialization failed")
+
     
-    # Create necessary directories
-    os.makedirs(Config.UPLOAD_FOLDER, exist_ok=True)
-    os.makedirs(Config.OUTPUT_FOLDER, exist_ok=True)
-    
-    
-    # ============================================
     # ROUTES
-    # ============================================
-    
     @app.route('/')
     def index():
-        """Root endpoint - API information"""
+        """Root endpoint"""
         return jsonify({
             'service': 'Voice Assistant API',
-            'version': '1.0.0',
-            'status': 'running',
-            'endpoints': {
-                'health': '/api/health',
-                'process_voice': '/api/process_voice (POST)',
-                'test_groq': '/api/test_groq'
-            }
+            'status': 'running'
         })
     
     
     @app.route('/api/health', methods=['GET'])
     def health_check():
         """Health check endpoint"""
-        
         # Test Groq connection
         groq_status = test_groq_connection()
         
         return jsonify({
             'status': 'healthy',
-            'timestamp': datetime.now().isoformat(),
             'services': {
                 'flask': 'running',
                 'groq': 'connected' if groq_status else 'disconnected',
@@ -205,33 +184,12 @@ def create_app(config_name='development'):
             }), 500
     
     
-    @app.route('/api/test_groq', methods=['GET'])
-    def test_groq_endpoint():
-        """Test Groq API connection"""
-        
-        if test_groq_connection():
-            return jsonify({
-                'success': True,
-                'message': 'Groq API connection successful'
-            })
-        else:
-            return jsonify({
-                'success': False,
-                'message': 'Groq API connection failed'
-            }), 500
-    
-    
-    @app.route('/static/audio/outputs/<filename>')
-    def serve_audio(filename):
-        """Serve generated audio files"""
-        return send_from_directory(Config.OUTPUT_FOLDER, filename)
-    
     
     @app.route('/api/cleanup', methods=['POST'])
     def cleanup_endpoint():
         """Manually trigger cleanup of old audio files"""
         try:
-            cleanup_audio_files(max_age_hours=24)
+            cleanup_audio_files()
             return jsonify({
                 'success': True,
                 'message': 'Cleanup completed successfully'
@@ -241,12 +199,9 @@ def create_app(config_name='development'):
                 'success': False,
                 'error': str(e)
             }), 500
+
     
-    
-    # ============================================
     # ERROR HANDLERS
-    # ============================================
-    
     @app.errorhandler(404)
     def not_found(error):
         """Handle 404 errors"""
@@ -274,10 +229,7 @@ def create_app(config_name='development'):
         }), 413
     
     
-    # ============================================
     # STARTUP
-    # ============================================
-    
     @app.before_request
     def log_request():
         """Log all incoming requests"""
@@ -286,22 +238,19 @@ def create_app(config_name='development'):
     
     return app
 
-
-# ============================================
 # RUN APPLICATION
-# ============================================
 
 if __name__ == '__main__':
     app = create_app()
     
     if app:
-        print("\n" + "="*50)
+        print("\n" + "-"*50)
         print("Voice Assistant Backend Server")
-        print("="*50)
+        print("-"*50)
         print(f"Running on: http://{Config.HOST}:{Config.PORT}")
         print(f"Environment: {Config.FLASK_ENV}")
         print(f"CORS enabled for: {Config.CORS_ORIGINS}")
-        print("="*50 + "\n")
+        print("-"*50 + "\n")
         
         # Run Flask app
         app.run(

@@ -2,7 +2,6 @@ import os
 from gtts import gTTS
 from datetime import datetime
 from config import Config
-# from utils.audio_utils import delete_file
 
 
 def text_to_speech(text, language='en', slow=False):
@@ -70,39 +69,7 @@ def text_to_speech(text, language='en', slow=False):
             'error': f'Speech synthesis failed: {str(e)}'
         }
 
-
-def generate_speech_with_retry(text, max_retries=3):
-    """
-    Generate speech with retry mechanism
-    
-    Args:
-        text: Text to convert
-        max_retries: Maximum retry attempts
-        
-    Returns:
-        dict: Result of speech generation
-    """
-    for attempt in range(max_retries):
-        print(f"TTS attempt {attempt + 1}/{max_retries}")
-        
-        result = text_to_speech(text)
-        
-        if result['success']:
-            return result
-        
-        # If failed, continue to next attempt
-        continue
-    
-    # All attempts failed
-    return {
-        'success': False,
-        'audio_path': None,
-        'audio_url': None,
-        'error': 'Speech generation failed after multiple attempts'
-    }
-
-
-def cleanup_audio_files(max_age_hours=24):
+def cleanup_audio_files():
     """
     Clean up old audio files from output folder
     
@@ -113,38 +80,15 @@ def cleanup_audio_files(max_age_hours=24):
         from utils.audio_utils import cleanup_old_files
         
         # Cleanup output folder
-        cleanup_old_files(Config.OUTPUT_FOLDER, max_age_hours)
+        cleanup_old_files(Config.OUTPUT_FOLDER)
         
         # Cleanup upload folder
-        cleanup_old_files(Config.UPLOAD_FOLDER, max_age_hours)
+        cleanup_old_files(Config.UPLOAD_FOLDER)
         
-        print(f"Cleaned up audio files older than {max_age_hours} hours")
+        print(f"Cleaned up audio files !")
     
     except Exception as e:
         print(f"Cleanup error: {str(e)}")
-
-
-def get_supported_languages():
-    """
-    Get list of supported languages for TTS
-    
-    Returns:
-        dict: Language codes and names
-    """
-    return {
-        'en': 'English',
-        'hi': 'Hindi',
-        'es': 'Spanish',
-        'fr': 'French',
-        'de': 'German',
-        'it': 'Italian',
-        'ja': 'Japanese',
-        'ko': 'Korean',
-        'zh-CN': 'Chinese (Simplified)',
-        'ar': 'Arabic',
-        'ru': 'Russian',
-        'pt': 'Portuguese'
-    }
 
 
 def validate_text_length(text, max_length=500):
@@ -162,38 +106,3 @@ def validate_text_length(text, max_length=500):
         return False, f"Text too long. Maximum {max_length} characters allowed."
     
     return True, None
-
-
-def split_long_text(text, chunk_size=500):
-    """
-    Split long text into chunks for TTS
-    
-    Args:
-        text: Long text
-        chunk_size: Maximum chunk size
-        
-    Returns:
-        list: List of text chunks
-    """
-    words = text.split()
-    chunks = []
-    current_chunk = []
-    current_length = 0
-    
-    for word in words:
-        word_length = len(word) + 1  # +1 for space
-        
-        if current_length + word_length > chunk_size:
-            # Save current chunk and start new one
-            chunks.append(' '.join(current_chunk))
-            current_chunk = [word]
-            current_length = word_length
-        else:
-            current_chunk.append(word)
-            current_length += word_length
-    
-    # Add last chunk
-    if current_chunk:
-        chunks.append(' '.join(current_chunk))
-    
-    return chunks

@@ -6,6 +6,10 @@ A real-time voice-to-voice AI assistant built with React, Flask, and Groq AI. Sp
 
 ---
 
+## Watch Video
+
+[Working Demo](https://drive.google.com/file/d/10e-nXFV0cQwUoAZ89yh6xLPcD3PWWmgf/view?usp=sharing)
+
 ## ✨ Features
 
 - 🎤 **Voice Input** - Real-time microphone recording with visual feedback
@@ -18,6 +22,20 @@ A real-time voice-to-voice AI assistant built with React, Flask, and Groq AI. Sp
 - 📱 **Responsive Design** - Works on desktop and mobile browsers
 
 ---
+
+## 📸 Screenshots
+
+### Screen
+
+![Screen](screenshots/va1.png)
+
+### Chat Display
+
+![Chats](screenshots/va2.png)
+
+### Recording
+
+![Recording](screenshots/va3.png)
 
 ## 🏗️ Tech Stack
 
@@ -39,17 +57,6 @@ A real-time voice-to-voice AI assistant built with React, Flask, and Groq AI. Sp
 - **Google Speech Recognition** - Speech-to-text conversion
 - **gTTS** - Google Text-to-Speech
 - **PyDub** - Audio processing
-- **Requests** - HTTP library
-
----
-
-## 📋 Prerequisites
-
-### Required Software
-
-- **Python 3.8+** - [Download](https://www.python.org/downloads/)
-- **Node.js 18+** - [Download](https://nodejs.org/)
-- **npm** or **yarn** - Package manager
 
 ### API Keys
 
@@ -100,9 +107,6 @@ cd ../Frontend
 
 # Install dependencies
 npm install
-
-# Or with yarn
-yarn install
 ```
 
 ---
@@ -154,33 +158,11 @@ cd backend
 python app.py
 ```
 
-**Expected output:**
-
-```
-Configuration validated successfully
-Groq client initialized successfully
-==================================================
-Voice Assistant Backend Server
-==================================================
-Running on: http://0.0.0.0:5000
-Environment: development
-==================================================
-```
-
 ### Start Frontend Dev Server
 
 ```bash
 cd frontend
 npm run dev
-```
-
-**Expected output:**
-
-```
-VITE v7.2.4  ready in 500 ms
-
-➜  Local:   http://localhost:5173/
-➜  Network: use --host to expose
 ```
 
 ### Access Application
@@ -206,69 +188,15 @@ http://localhost:5173
 
 **Windows:**
 
-1. Settings → System → Sound → Input
+1. Settings -> System -> Sound -> Input
 2. Select your preferred microphone
 3. Test by speaking (bars should move)
 4. Refresh browser
 
 **Browser Settings:**
 
-1. Settings → site settings → Microphone
+1. Settings -> site settings -> Microphone
 2. Select correct device
-
----
-
-## 📂 Project Structure
-
-```
-voice-assistant/
-│
-├── backend/                    # Flask backend
-│   ├── app.py                 # Main Flask application
-│   ├── config.py              # Configuration settings
-│   ├── requirements.txt       # Python dependencies
-│   ├── .env                   # Environment variables
-│   │
-│   ├── services/              # Business logic
-│   │   ├── __init__.py
-│   │   ├── speech_service.py # Speech recognition
-│   │   ├── groq_service.py   # Groq AI integration
-│   │   └── tts_service.py    # Text-to-speech
-│   │
-│   ├── utils/                 # Helper functions
-│   │   ├── __init__.py
-│   │   └── audio_utils.py    # Audio processing
-│   │
-│   └── static/                # Static files
-│       └── audio/
-│           ├── uploads/       # User recordings
-│           └── outputs/       # AI audio responses
-│
-├── frontend/                   # React frontend
-│   ├── src/
-│   │   ├── App.jsx           # Main React component
-│   │   ├── main.jsx          # Entry point
-│   │   ├── index.css         # Tailwind imports
-│   │   │
-│   │   ├── components/       # React components
-│   │   │   ├── VoiceInput.jsx
-│   │   │   ├── ChatDisplay.jsx
-│   │   │   ├── AudioPlayer.jsx
-│   │   │   └── LoadingSpinner.jsx
-│   │   │
-│   │   ├── services/         # API calls
-│   │   │   └── api.js
-│   │   │
-│   │   └── utils/            # Helper functions
-│   │       └── audioRecorder.js
-│   │
-│   ├── index.html
-│   ├── package.json
-│   └── tailwind.config.js
-│
-├── .gitignore
-└── README.md
-```
 
 ---
 
@@ -276,14 +204,12 @@ voice-assistant/
 
 ### Backend API Routes
 
-| Method | Endpoint                           | Description             |
-| ------ | ---------------------------------- | ----------------------- |
-| GET    | `/`                                | API information         |
-| GET    | `/api/health`                      | Health check            |
-| POST   | `/api/process_voice`               | Process voice recording |
-| GET    | `/api/test_groq`                   | Test Groq connection    |
-| GET    | `/static/audio/outputs/<filename>` | Serve audio files       |
-| POST   | `/api/cleanup`                     | Cleanup old audio files |
+| Method | Endpoint             | Description                                     |
+| ------ | -------------------- | ----------------------------------------------- |
+| GET    | `/`                  | API information                                 |
+| GET    | `/api/health`        | Health check- check Groq Connection             |
+| POST   | `/api/process_voice` | Process voice recording & serves audio file url |
+| POST   | `/api/cleanup`       | Cleanup old audio files                         |
 
 ---
 
@@ -330,30 +256,15 @@ voice-assistant/
 
 1. Check folder permissions
 2. Verify folders exist: `backend/static/audio/uploads/`
-3. Run backend with administrator privileges
-4. Check disk space
 
 ---
 
 ## 🎯 Features Roadmap
 
-- Multi-language support (Hindi, Spanish, etc.)
-- Conversation history persistence
+- Audio files deletes from server as clear button is clicked
 - Wake word detection ("Hey Assistant")
 - Voice activity detection (VAD)
 - Real-time streaming responses
-
----
-
-## 🤝 Contributing
-
-Contributions are welcome! Please feel free to submit a Pull Request.
-
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
 
 ---
 
@@ -376,9 +287,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 📧 Contact
 
-**Aasthayuli** - aasthayuli2000@gmail.com
-
-**Project Link:** [Voice Assistant with React and Python(Flask)](https://github.com/Aasthayuli/Voice_Assistant_with_Groq_API)
+**Aasthayuli** - aasthayuli2025@gmail.com
 
 ---
 

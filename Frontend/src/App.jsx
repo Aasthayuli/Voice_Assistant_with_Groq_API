@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { AlertCircle, Wifi, WifiOff } from "lucide-react";
 import VoiceInput from "./components/VoiceInput";
 import ChatDisplay from "./components/ChatDisplay";
-import { checkBackendHealth } from "./services/api";
+import { checkBackendHealth, cleanupAudioFiles } from "./services/api";
 
 function App() {
   const [messages, setMessages] = useState([]);
@@ -31,7 +31,7 @@ function App() {
 
       if (!result.success) {
         setError(
-          "Cannot connect to backend server. Please make sure it is running on http://localhost:5000"
+          "Cannot connect to backend server. Please make sure it is running on http://localhost:5000",
         );
       } else {
         setError(null);
@@ -70,9 +70,16 @@ function App() {
   const handleClearChat = () => {
     setShowClearModal(true);
   };
-  const confirmClearChat = () => {
+  const confirmClearChat = async () => {
     setMessages([]);
-    setShowClearModal(false);
+    try {
+      await cleanupAudioFiles();
+    } catch (e) {
+      console.log("Error in cleaning audio files at server", e);
+      // Continue- non critical
+    } finally {
+      setShowClearModal(false);
+    }
   };
 
   const cancelClear = () => {
@@ -111,8 +118,8 @@ function App() {
                 {isChecking
                   ? "Checking..."
                   : backendConnected
-                  ? "Connected"
-                  : "Disconnected"}
+                    ? "Connected"
+                    : "Disconnected"}
               </span>
             </div>
 

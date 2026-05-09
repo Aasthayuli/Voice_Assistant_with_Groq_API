@@ -22,7 +22,7 @@ apiClient.interceptors.request.use(
   (error) => {
     console.error("Request error:", error);
     return Promise.reject(error);
-  }
+  },
 );
 
 // Response interceptor - handles errors globally
@@ -47,7 +47,7 @@ apiClient.interceptors.response.use(
     }
 
     return Promise.reject(error);
-  }
+  },
 );
 
 /**
@@ -111,26 +111,6 @@ export const checkBackendHealth = async () => {
     return {
       success: false,
       error: "Backend is not responding",
-    };
-  }
-};
-
-/**
- * Test Groq API connection
- * @returns {Promise} Connection status
- */
-export const testGroqConnection = async () => {
-  try {
-    const response = await apiClient.get("/api/test_groq");
-    return {
-      success: true,
-      data: response.data,
-    };
-  } catch (error) {
-    console.error("Groq test error:", error);
-    return {
-      success: false,
-      error: "Groq API connection failed",
     };
   }
 };

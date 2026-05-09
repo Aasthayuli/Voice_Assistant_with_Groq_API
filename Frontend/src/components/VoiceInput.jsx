@@ -64,7 +64,7 @@ const VoiceInput = ({ onMessageSent, onError }) => {
     } catch (error) {
       console.error("Start recording error:", error);
       onError?.(
-        "Failed to start recording. Please check microphone permissions."
+        "Failed to start recording. Please check microphone permissions.",
       );
     }
   };
@@ -90,7 +90,7 @@ const VoiceInput = ({ onMessageSent, onError }) => {
       // Check blob size
       if (result.audioBlob.size < 1000) {
         throw new Error(
-          "Recording too short. Please speak for at least 1 second."
+          "Recording too short. Please speak for at least 1 second.",
         );
       }
 
@@ -233,8 +233,8 @@ const VoiceInput = ({ onMessageSent, onError }) => {
             isListening
               ? "bg-red-500 hover:bg-red-600 shadow-glow scale-110"
               : isProcessing
-              ? "bg-gray-400 cursor-not-allowed"
-              : "bg-primary-500 hover:bg-primary-600 shadow-glow hover:scale-105"
+                ? "bg-gray-400 cursor-not-allowed"
+                : "bg-primary-500 hover:bg-primary-600 shadow-glow hover:scale-105"
           }`}
           aria-label={isListening ? "Stop recording" : "Start recording"}
         >
@@ -252,7 +252,7 @@ const VoiceInput = ({ onMessageSent, onError }) => {
       {isListening && (
         <button
           onClick={handleCancel}
-          className="text-sm text-gray-200 hover:text-gray-800 underline"
+          className="relative z-20 text-sm text-gray-200 hover:text-gray-800 underline"
         >
           Cancel
         </button>
